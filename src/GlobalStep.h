@@ -6,7 +6,7 @@
 #include <vector>
 
 // Process-wide registry that mirrors the global step value across every
-// plugin instance loaded in the host. The knob in any Lock Faders instance
+// plugin instance loaded in the host. The knob in any Fader Locks instance
 // writes here; all other instances read and follow.
 class GlobalStep
 {

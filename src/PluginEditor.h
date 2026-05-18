@@ -6,12 +6,12 @@
 #include "NotchedFader.h"
 #include "PluginProcessor.h"
 
-class LockFadersEditor : public juce::AudioProcessorEditor,
+class FaderLocksEditor : public juce::AudioProcessorEditor,
                          public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    explicit LockFadersEditor (LockFadersProcessor&);
-    ~LockFadersEditor() override;
+    explicit FaderLocksEditor (FaderLocksProcessor&);
+    ~FaderLocksEditor() override;
 
     void paint   (juce::Graphics&) override;
     void resized() override;
@@ -31,7 +31,7 @@ private:
     void writeStepValue (float v);
     void applyStepToUi  (float v);
 
-    LockFadersProcessor& processor;
+    FaderLocksProcessor& processor;
 
     juce::Label   titleLabel;
     NotchedFader  fader;
@@ -48,5 +48,5 @@ private:
 
     bool suppressKnobCallback { false };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LockFadersEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FaderLocksEditor)
 };

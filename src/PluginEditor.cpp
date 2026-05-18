@@ -2,14 +2,14 @@
 
 #include <cmath>
 
-constexpr float LockFadersEditor::kStepPresets[8];
+constexpr float FaderLocksEditor::kStepPresets[8];
 
-float LockFadersEditor::positionToStep (int pos)
+float FaderLocksEditor::positionToStep (int pos)
 {
     return kStepPresets[juce::jlimit (0, 7, pos)];
 }
 
-int LockFadersEditor::stepToNearestPosition (float step)
+int FaderLocksEditor::stepToNearestPosition (float step)
 {
     int   bestIdx  = 0;
     float bestDist = std::abs (step - kStepPresets[0]);
@@ -28,13 +28,13 @@ static juce::String formatStepValue (float v)
     return juce::String (v, decimals) + " dB";
 }
 
-LockFadersEditor::LockFadersEditor (LockFadersProcessor& p)
+FaderLocksEditor::FaderLocksEditor (FaderLocksProcessor& p)
     : juce::AudioProcessorEditor (p), processor (p)
 {
     setSize (280, 460);
 
     // ---- Title ----
-    titleLabel.setText ("Lock Faders", juce::dontSendNotification);
+    titleLabel.setText ("Fader Locks", juce::dontSendNotification);
     titleLabel.setFont (juce::Font (juce::FontOptions (18.0f, juce::Font::bold)));
     titleLabel.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (titleLabel);
@@ -110,19 +110,19 @@ LockFadersEditor::LockFadersEditor (LockFadersProcessor& p)
     processor.parameters.addParameterListener ("step", this);
 }
 
-LockFadersEditor::~LockFadersEditor()
+FaderLocksEditor::~FaderLocksEditor()
 {
     processor.parameters.removeParameterListener ("step", this);
 }
 
-void LockFadersEditor::writeStepValue (float v)
+void FaderLocksEditor::writeStepValue (float v)
 {
     auto* p = processor.parameters.getParameter ("step");
     if (p == nullptr) return;
     p->setValueNotifyingHost (p->convertTo0to1 (v));
 }
 
-void LockFadersEditor::applyStepToUi (float v)
+void FaderLocksEditor::applyStepToUi (float v)
 {
     fader.setStep ((double) v);
 
@@ -143,13 +143,13 @@ void LockFadersEditor::applyStepToUi (float v)
     stepValueLabel.setText (formatStepValue (v), juce::dontSendNotification);
 }
 
-void LockFadersEditor::parameterChanged (const juce::String& id, float newValue)
+void FaderLocksEditor::parameterChanged (const juce::String& id, float newValue)
 {
     if (id != "step") return;
     juce::MessageManager::callAsync ([this, newValue] { applyStepToUi (newValue); });
 }
 
-void LockFadersEditor::paint (juce::Graphics& g)
+void FaderLocksEditor::paint (juce::Graphics& g)
 {
     juce::ColourGradient bg (juce::Colour (0xff222428), 0.0f, 0.0f,
                              juce::Colour (0xff15171a), 0.0f, (float) getHeight(),
@@ -162,7 +162,7 @@ void LockFadersEditor::paint (juce::Graphics& g)
     g.drawVerticalLine (getWidth() / 2, 40.0f, (float) getHeight() - 20.0f);
 }
 
-void LockFadersEditor::resized()
+void FaderLocksEditor::resized()
 {
     auto r = getLocalBounds();
     titleLabel.setBounds (r.removeFromTop (32));

@@ -8,7 +8,7 @@ namespace
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout
-LockFadersProcessor::createLayout()
+FaderLocksProcessor::createLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
@@ -41,7 +41,7 @@ LockFadersProcessor::createLayout()
     return layout;
 }
 
-LockFadersProcessor::LockFadersProcessor()
+FaderLocksProcessor::FaderLocksProcessor()
     : AudioProcessor (BusesProperties()
                           .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
                           .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
@@ -67,14 +67,14 @@ LockFadersProcessor::LockFadersProcessor()
         });
 }
 
-LockFadersProcessor::~LockFadersProcessor()
+FaderLocksProcessor::~FaderLocksProcessor()
 {
     GlobalStep::get().removeListener (globalListenerId);
     parameters.removeParameterListener ("step",   this);
     parameters.removeParameterListener ("gainDb", this);
 }
 
-void LockFadersProcessor::syncStepParameterFromGlobal (float v)
+void FaderLocksProcessor::syncStepParameterFromGlobal (float v)
 {
     auto* p = parameters.getParameter ("step");
     if (p == nullptr) return;
@@ -87,14 +87,14 @@ void LockFadersProcessor::syncStepParameterFromGlobal (float v)
     writingFromGlobal.store (false, std::memory_order_release);
 }
 
-void LockFadersProcessor::prepareToPlay (double sampleRate, int /*samplesPerBlock*/)
+void FaderLocksProcessor::prepareToPlay (double sampleRate, int /*samplesPerBlock*/)
 {
     smoothedGain.reset (sampleRate, 0.02);
     smoothedGain.setCurrentAndTargetValue (
         juce::Decibels::decibelsToGain (gainParam->load(), kMinDb));
 }
 
-bool LockFadersProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool FaderLocksProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
     const auto& in  = layouts.getMainInputChannelSet();
     const auto& out = layouts.getMainOutputChannelSet();
@@ -102,7 +102,7 @@ bool LockFadersProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
     return in == out && in.size() >= 1;
 }
 
-void LockFadersProcessor::processBlock (juce::AudioBuffer<float>& buffer,
+void FaderLocksProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                         juce::MidiBuffer& /*midi*/)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -122,18 +122,18 @@ void LockFadersProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     }
 }
 
-juce::AudioProcessorEditor* LockFadersProcessor::createEditor()
+juce::AudioProcessorEditor* FaderLocksProcessor::createEditor()
 {
-    return new LockFadersEditor (*this);
+    return new FaderLocksEditor (*this);
 }
 
-void LockFadersProcessor::getStateInformation (juce::MemoryBlock& dest)
+void FaderLocksProcessor::getStateInformation (juce::MemoryBlock& dest)
 {
     if (auto xml = parameters.copyState().createXml())
         copyXmlToBinary (*xml, dest);
 }
 
-void LockFadersProcessor::setStateInformation (const void* data, int size)
+void FaderLocksProcessor::setStateInformation (const void* data, int size)
 {
     if (auto xml = getXmlFromBinary (data, size))
     {
@@ -143,7 +143,7 @@ void LockFadersProcessor::setStateInformation (const void* data, int size)
     }
 }
 
-void LockFadersProcessor::parameterChanged (const juce::String& id, float newValue)
+void FaderLocksProcessor::parameterChanged (const juce::String& id, float newValue)
 {
     if (id == "step")
     {
@@ -156,5 +156,5 @@ void LockFadersProcessor::parameterChanged (const juce::String& id, float newVal
 // JUCE entry point
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new LockFadersProcessor();
+    return new FaderLocksProcessor();
 }

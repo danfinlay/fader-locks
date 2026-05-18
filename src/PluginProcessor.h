@@ -5,12 +5,12 @@
 
 #include "GlobalStep.h"
 
-class LockFadersProcessor : public juce::AudioProcessor,
+class FaderLocksProcessor : public juce::AudioProcessor,
                             public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    LockFadersProcessor();
-    ~LockFadersProcessor() override;
+    FaderLocksProcessor();
+    ~FaderLocksProcessor() override;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override {}
@@ -21,7 +21,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "Lock Faders"; }
+    const juce::String getName() const override { return "Fader Locks"; }
     bool   acceptsMidi() const override  { return false; }
     bool   producesMidi() const override { return false; }
     bool   isMidiEffect() const override { return false; }
@@ -52,5 +52,5 @@ private:
     GlobalStep::ListenerId globalListenerId { 0 };
     std::atomic<bool>      writingFromGlobal { false };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LockFadersProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FaderLocksProcessor)
 };
