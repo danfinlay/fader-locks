@@ -1,0 +1,60 @@
+Fader Locks — Windows install
+=============================
+
+1) UNZIP this file somewhere (Desktop is fine).
+
+2) COPY the folder named "Fader Locks.vst3" into:
+
+       C:\Program Files\Common Files\VST3\
+
+   Windows will ask for permission ("Provide administrator
+   permission to continue") — click Continue.
+
+3) OPEN your DAW (Reaper, Cubase, Studio One, Ableton Live, etc.)
+   and do a VST3 plugin rescan. The plugin will appear as:
+
+       FaderLocks  ->  Fader Locks
+
+   Drop it on any track's insert chain. Open one on a second track
+   to see the global Step knob staying in sync between them.
+
+
+If Windows blocks the plugin
+----------------------------
+This plugin is unsigned (signing certificates cost money, and this
+is a friend-of-a-friend build), so SmartScreen / Defender may warn
+you the first time. You can:
+
+  - Right-click the .vst3 folder before moving it, choose
+    Properties, tick "Unblock" if you see it, then OK.
+  - Or in your DAW, confirm any "load this unsigned plugin?" prompt.
+
+
+How to use it
+-------------
+The fader works like any mix fader on the track, just one extra
+gain stage before the actual channel fader. The big idea is the
+"Step" knob: it sets the resolution that ALL Fader Locks faders
+will move at when you drag them with the mouse.
+
+Pick a coarse step (10, 5, 3 dB) to do broad mix moves. As the
+mix takes shape, dial the step down to 1, 0.5, 0.25 dB for the
+fine work. The faders KEEP their current values when you change
+the step — they just snap to the new grid relative to wherever
+they happen to be sitting.
+
+The step knob is shared across every Fader Locks instance in the
+session, so turning it on one channel changes it on all of them.
+
+Set the step to "Off" to deactivate snapping and use the faders
+the normal continuous way. Double-click the value below the knob
+to type any custom step (e.g. 0.1, 1.5, 7).
+
+Host automation on the fader is NOT constrained, so automation
+lanes still work normally. Typing a value in the fader's text box
+also bypasses the snap.
+
+
+Questions? Bugs?
+----------------
+Reply to whoever sent you this zip.

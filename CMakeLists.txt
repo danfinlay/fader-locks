@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum macOS version")
 
+option(FADERLOCKS_INSTALL_AFTER_BUILD
+       "Copy the built .vst3 into the system VST3 folder after building (turn OFF for CI)"
+       ON)
+
 include(FetchContent)
 FetchContent_Declare(
     JUCE
@@ -24,7 +28,7 @@ juce_add_plugin(FaderLocks
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    COPY_PLUGIN_AFTER_BUILD ${FADERLOCKS_INSTALL_AFTER_BUILD}
     VST3_CATEGORIES "Fx" "Tools"
 )
 
